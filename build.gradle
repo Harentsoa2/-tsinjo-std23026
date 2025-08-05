@@ -145,6 +145,7 @@ dependencies {
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
 
 'org.flywaydb:flyway-core:11.10.5'
+'org.springframework.boot:spring-boot-starter-thymeleaf:3.2.5'
 
 
 }
