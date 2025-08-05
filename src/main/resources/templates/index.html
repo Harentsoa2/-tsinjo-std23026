@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tsinjo</title>
+</head>
+<body>
+
+<table border="1" style="width: 600px;">
+    <tr>
+        <td>
+            <h1>Tsinjo</h1>
+
+            <div th:if="${successMessage}" style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px;">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 10px;">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <form th:action="@{/donations}" th:object="${donationRequest}" method="post">
+
+                <!-- ======================= CHAMP RÉ-AJOUTÉ ======================= -->
+                <input type="text" th:field="*{name}" placeholder="Nom complet" required>
+                <!-- ============================================================= -->
+
+                <input type="email" th:field="*{email}" placeholder="Email" required>
+
+                <select th:field="*{paymentType}" required>
+                    <option value="Orange Money">Orange Money</option>
+                </select>
+
+                <input type="text" th:field="*{pspPaymentId}" placeholder="Référence de paiement" required>
+
+                <button type="submit">Donner !</button>
+
+                <div th:if="${#fields.hasAnyErrors()}" style="color: red; font-size: 0.8em; margin-top: 10px;">
+                    <ul>
+                        <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                    </ul>
+                </div>
+            </form>
+
+            <hr>
+
+            <h2>Historique</h2>
+
+            <div th:if="${#lists.isEmpty(transactions)}">
+                <p>Aucune transaction pour le moment.</p>
+            </div>
+
+            <ul th:unless="${#lists.isEmpty(transactions)}">
+                <li th:each="tx : ${transactions}">
+                    <strong th:text="${tx.amount >= 0 ? '+' : ''} + ${#numbers.formatDecimal(tx.amount, 1, 'WHITESPACE', 0, 'POINT')} + ' Ar'"></strong>
+                    <span th:if="${tx.status != null}" th:text="'(' + ${tx.status} + ', ' + ${tx.paymentType} + ')'"></span>
+                    <span th:if="${tx.type == 'DON'}" th:text="' ' + ${#temporals.format(tx.dateTime, 'dd/MM/yyyy')} + ' Par ' + ${tx.donorName} + ' (' + ${tx.donorEmail} + ')'"></span>
+                    <div th:if="${tx.type == 'AIDE'}">
+                        <span th:text="${tx.description}"></span>
+                    </div>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
