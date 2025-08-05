@@ -24,7 +24,7 @@ public class VolaPaymentVerifier {
     @Value("${vola.api.url:https://42cwka3n4ifcp7ufheyrpmph240iuaxo.lambda-url.eu-west-3.on.aws}")
     private String volaApiUrl;
     
-    @Value("${vola.api.key:13e46640-889f-4d59-b45b-62f4e9dd3830}")
+    @Value("${vola.api.key:demo-api-key}")
     private String volaApiKey;
     
     @Scheduled(fixedDelay = 60000)
